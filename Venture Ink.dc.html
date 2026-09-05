@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" href="assets/venture-ink-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #F8F8F5; color: #050505; -webkit-font-smoothing: antialiased; }
+  a { color: #050505; text-decoration: none; }
+  a:hover { color: #0F6E56; }
+  ::selection { background: #E1F5EE; }
+  @keyframes vi-grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes vi-grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes vi-fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+<div style="font-family: Inter, Helvetica, sans-serif; background: #F8F8F5; min-height: 100vh;">
+
+  <sc-if value="{{ showProgress }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; top: 0; left: 0; right: 0; height: 2px; background: transparent; z-index: 60;">
+      <div style="height: 2px; background: #0F6E56; width: {{ progress }};"></div>
+    </div>
+  </sc-if>
+
+  <header style="position: sticky; top: 0; z-index: 50; background: #F8F8F5; border-bottom: 1px solid #E4E4DE;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 32px; min-height: 64px; padding-top: 10px; padding-bottom: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 40px;">
+      <a href="#" onClick="{{ goHome }}" style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+        <img src="assets/venture-ink-mark.png" alt="Venture Ink" style="height: 26px; width: auto; display: block;" />
+        <span style="font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; letter-spacing: 0.005em; line-height: 1;">Venture Ink</span>
+      </a>
+      <nav style="display: flex; flex-wrap: wrap; gap: 26px; align-items: center; flex: 1;">
+        <a href="#" onClick="{{ goHome }}" style="font-size: 13px; font-weight: 500; letter-spacing: 0.02em; padding: 4px 0; border-bottom: 1px solid #0F6E56;">Latest</a>
+        <a href="#" style="font-size: 13px; font-weight: 500; letter-spacing: 0.02em; padding: 4px 0; border-bottom: 1px solid transparent;" style-hover="border-bottom-color: #050505;">Startups</a>
+        <a href="#" style="font-size: 13px; font-weight: 500; letter-spacing: 0.02em; padding: 4px 0; border-bottom: 1px solid transparent;" style-hover="border-bottom-color: #050505;">VC</a>
+        <a href="#" style="font-size: 13px; font-weight: 500; letter-spacing: 0.02em; padding: 4px 0; border-bottom: 1px solid transparent;" style-hover="border-bottom-color: #050505;">Founders</a>
+        <a href="#" style="font-size: 13px; font-weight: 500; letter-spacing: 0.02em; padding: 4px 0; border-bottom: 1px solid transparent;" style-hover="border-bottom-color: #050505;">Technology</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <button onClick="{{ openSearch }}" aria-label="Search" style="background: none; border: 0; padding: 4px; cursor: pointer; color: #050505; display: flex; align-items: center;" style-hover="color: #0F6E56;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5"></circle><line x1="10.8" y1="10.8" x2="15" y2="15"></line></svg>
+        </button>
+        <a href="#newsletter" style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #F8F8F5; background: #050505; padding: 9px 16px;" style-hover="background: #0F6E56; color: #F8F8F5;">Subscribe</a>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 70; background: rgba(248,248,245,0.97); padding: 120px 32px 0;">
+      <div style="max-width: 720px; margin: 0 auto;">
+        <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #050505; padding-bottom: 14px;">
+          <input placeholder="Search Venture Ink" style="flex: 1; border: 0; background: transparent; outline: none; font-family: 'Instrument Serif', Georgia, serif; font-size: 34px; color: #050505;" />
+          <button onClick="{{ closeSearch }}" style="background: none; border: 0; cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #6E6E66;">Close</button>
+        </div>
+        <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A82; margin: 28px 0 12px;">Popular searches</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <span style="font-size: 13px; border: 1px solid #E4E4DE; padding: 7px 12px; color: #3A3A36;">Seed funding India</span>
+          <span style="font-size: 13px; border: 1px solid #E4E4DE; padding: 7px 12px; color: #3A3A36;">AI infrastructure</span>
+          <span style="font-size: 13px; border: 1px solid #E4E4DE; padding: 7px 12px; color: #3A3A36;">Peak XV</span>
+          <span style="font-size: 13px; border: 1px solid #E4E4DE; padding: 7px 12px; color: #3A3A36;">Second-time founders</span>
+          <span style="font-size: 13px; border: 1px solid #E4E4DE; padding: 7px 12px; color: #3A3A36;">The Venture Index</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 32px;">
+
+      <section style="padding: 56px 0 40px; border-bottom: 1px solid #E4E4DE; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap;">
+        <div>
+          <h1 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 64px; line-height: 0.95; margin: 0; letter-spacing: -0.01em;">Venture Ink</h1>
+          <p style="font-size: 15px; color: #4A4A44; margin: 14px 0 0; letter-spacing: 0.005em;">Stories shaping the next generation of business.</p>
+        </div>
+        <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A82; margin: 0 0 6px;">Wednesday, 2 September 2026 &middot; Issue 041</p>
+      </section>
+
+      <section style="display: flex; flex-wrap: wrap; gap: 56px; padding: 44px 0 56px; border-bottom: 1px solid #E4E4DE;">
+        <article style="flex: 3 1 420px; min-width: 0;">
+          <a href="#" onClick="{{ goArticle }}" style="display: block;">
+            <div style="position: relative; overflow: hidden; aspect-ratio: 16 / 9.6; background: #ECECE6;">
+              <div style="position: absolute; inset: 0; background: #F2F2EE; padding: 26px 30px 22px; display: flex; flex-direction: column;">
+                <div style="display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: space-between; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A82;">
+                  <span>Fig. 1 &mdash; AI revenue models</span>
+                  <span>2019 &ndash; 2026</span>
+                </div>
+                <div style="flex: 1; display: flex; align-items: flex-end; gap: 5px; margin-top: 22px;"><div style="flex: 1; height: 18%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.00s;"></div><div style="flex: 1; height: 26%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.03s;"></div><div style="flex: 1; height: 35%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.06s;"></div><div style="flex: 1; height: 47%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.09s;"></div><div style="flex: 1; height: 58%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.12s;"></div><div style="flex: 1; height: 67%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.15s;"></div><div style="flex: 1; height: 73%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.18s;"></div><div style="flex: 1; height: 69%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.21s;"></div><div style="flex: 1; height: 61%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.24s;"></div><div style="flex: 1; height: 52%; background: #D9D8D0; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.27s;"></div><div style="flex: 1; height: 12%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.30s;"></div><div style="flex: 1; height: 16%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.33s;"></div><div style="flex: 1; height: 21%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.36s;"></div><div style="flex: 1; height: 29%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.39s;"></div><div style="flex: 1; height: 37%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.42s;"></div><div style="flex: 1; height: 44%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.45s;"></div><div style="flex: 1; height: 51%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.48s;"></div><div style="flex: 1; height: 58%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.51s;"></div><div style="flex: 1; height: 65%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.54s;"></div><div style="flex: 1; height: 73%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.57s;"></div><div style="flex: 1; height: 81%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.60s;"></div><div style="flex: 1; height: 87%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.63s;"></div><div style="flex: 1; height: 94%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.66s;"></div><div style="flex: 1; height: 100%; background: #0F6E56; transform-origin: bottom; animation: vi-grow-y 0.65s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.69s;"></div></div>
+                <div style="display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: space-between; margin-top: 14px; padding-top: 10px; border-top: 1px solid #E0DFD7; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;">
+                  <span style="color: #8A8A82;">Model access</span>
+                  <span style="color: #0F6E56;">Workflow &amp; data</span>
+                </div>
+              </div>
+            </div>
+            <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0F6E56; margin: 24px 0 12px;">AI / Startups</p>
+            <h2 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 52px; line-height: 1.04; letter-spacing: -0.012em; margin: 0; max-width: 15ch; text-wrap: pretty;">The next wave of AI startups won't look anything like the first.</h2>
+            <p style="font-size: 17px; line-height: 1.55; color: #3A3A34; margin: 18px 0 0; max-width: 56ch; text-wrap: pretty;">The first cohort sold access to models. The next one is being built around workflows, data rights and distribution &mdash; and it changes who gets funded.</p>
+            <p style="font-size: 12px; letter-spacing: 0.04em; color: #8A8A82; margin: 18px 0 0;">Venture Ink &middot; 8 min read</p>
+          </a>
+        </article>
+        <div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 32px; border-left: 1px solid #E4E4DE; padding-left: 40px;">
+          <article style="padding-bottom: 32px; border-bottom: 1px solid #E4E4DE;">
+            <a href="#" onClick="{{ goArticle }}" style="display: block;">
+              <div style="border: 1px solid #E4E4DE; background: #F2F2EE; padding: 18px 18px 20px; margin-bottom: 18px;">
+                <p style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A82; margin: 0 0 16px;">Fig. 2 &mdash; Share of India VC capital deployed</p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">Seed</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 62%; background: #0F6E56; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.10s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">62%</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">Series A</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 24%; background: #0F6E56; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.19s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">24%</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">Growth</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 14%; background: #8FBFAF; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.28s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">14%</span>
+                  </div>
+                </div>
+              </div><p style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0F6E56; margin: 0 0 10px;">VC</p>
+              <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 27px; line-height: 1.14; margin: 0; text-wrap: pretty;">Where venture capital is moving next</h3>
+              <p style="font-size: 14px; line-height: 1.55; color: #4A4A44; margin: 12px 0 0;">Growth desks are quiet, seed is crowded, and the middle of the market has almost disappeared.</p>
+              <p style="font-size: 12px; color: #8A8A82; margin: 14px 0 0;">Venture Ink &middot; 5 min read</p>
+            </a>
+          </article>
+          <article>
+            <a href="#" onClick="{{ goArticle }}" style="display: block;">
+              <div style="border: 1px solid #E4E4DE; background: #F2F2EE; padding: 18px 18px 20px; margin-bottom: 18px;">
+                <p style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A82; margin: 0 0 16px;">Fig. 3 &mdash; Headcount at Series A</p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">2019</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 100%; background: #D9D8D0; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.10s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">42</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">2022</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 64%; background: #8FBFAF; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.19s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">27</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">2026</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 26%; background: #0F6E56; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.28s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">11</span>
+                  </div>
+                </div>
+              </div><p style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0F6E56; margin: 0 0 10px;">Founders</p>
+              <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 27px; line-height: 1.14; margin: 0; text-wrap: pretty;">The founders building what comes after the hype</h3>
+              <p style="font-size: 14px; line-height: 1.55; color: #4A4A44; margin: 12px 0 0;">A generation of operators is starting companies with smaller teams and far less patience for narrative.</p>
+              <p style="font-size: 12px; color: #8A8A82; margin: 14px 0 0;">Venture Ink &middot; 6 min read</p>
+            </a>
+          </article>
+          <div style="margin-top: auto; padding-top: 28px; border-top: 1px solid #E4E4DE;">
+            <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A82; margin: 0 0 10px;">Also today</p>
+            <p style="font-size: 14px; line-height: 1.5; color: #3A3A34; margin: 0;">Zepto's ad business is quietly becoming its second P&amp;L.</p>
+          </div>
+        </div>
+      </section>
+
+      <section style="padding: 52px 0 8px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px;">
+          <h2 style="font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; margin: 0;">Latest</h2>
+          <a href="#" style="font-size: 12px; letter-spacing: 0.04em; color: #6E6E66; border-bottom: 1px solid #D8D8D0;" style-hover="color: #0F6E56; border-bottom-color: #0F6E56;">View all</a>
+        </div>
+        <sc-for list="{{ latest }}" as="s" hint-placeholder-count="5">
+          <article style="border-top: 1px solid #E4E4DE; padding: 26px 0;">
+            <a href="#" onClick="{{ goArticle }}" style="display: flex; flex-wrap: wrap-reverse; gap: 24px 40px; align-items: start;">
+              <div style="flex: 1 1 320px; min-width: 0;">
+                <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0F6E56; margin: 0 0 9px;">{{ s.category }}</p>
+                <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 31px; line-height: 1.12; margin: 0; max-width: 22ch; letter-spacing: -0.005em; text-wrap: pretty;">{{ s.title }}</h3>
+                <p style="font-size: 15px; line-height: 1.55; color: #4A4A44; margin: 11px 0 0; max-width: 62ch; text-wrap: pretty;">{{ s.dek }}</p>
+                <p style="font-size: 12px; color: #8A8A82; margin: 14px 0 0;">Venture Ink &middot; {{ s.read }}</p>
+              </div>
+              <sc-if value="{{ showThumbs }}" hint-placeholder-val="{{ true }}">
+                <div style="width: 168px; aspect-ratio: 4 / 3; background: #F2F2EE; border: 1px solid #E4E4DE; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; transition: background 0.3s ease, border-color 0.3s ease;" style-hover="background: #E1F5EE; border-color: #BFE3D6;">
+                  <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8A82;">{{ s.metricLabel }}</span>
+                  <span style="font-family: 'Instrument Serif', Georgia, serif; font-size: 34px; line-height: 1; color: #0F6E56;">{{ s.metric }}</span>
+                  <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; letter-spacing: 0.06em; color: #6E6E66;">{{ s.metricNote }}</span>
+                </div>
+              </sc-if>
+            </a>
+          </article>
+        </sc-for>
+      </section>
+    </div>
+
+    <section style="background: #050505; color: #F8F8F5; margin-top: 60px;">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 72px 32px 76px;">
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; padding-bottom: 40px; border-bottom: 1px solid #24241F;">
+          <div>
+            <h2 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 44px; line-height: 1; margin: 0;">The Venture Index</h2>
+            <p style="font-size: 15px; color: #9E9E94; margin: 14px 0 0;">The companies, investors and ideas worth watching.</p>
+          </div>
+          <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #0F6E56; margin: 0;">Updated monthly</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: #24241F; margin-top: 1px;">
+          <a href="#" style="background: #050505; padding: 40px 36px 44px; display: block;" style-hover="background: #0B0B0A;">
+            <p style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0.14em; color: #0F6E56; margin: 0 0 auto;">01</p>
+            <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; margin: 60px 0 12px; color: #F8F8F5;">Startups</h3>
+            <p style="font-size: 14px; line-height: 1.55; color: #9E9E94; margin: 0;">Companies gaining momentum, tracked by hiring, revenue signals and product velocity.</p>
+          </a>
+          <a href="#" style="background: #050505; padding: 40px 36px 44px; display: block;" style-hover="background: #0B0B0A;">
+            <p style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0.14em; color: #0F6E56; margin: 0;">02</p>
+            <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; margin: 60px 0 12px; color: #F8F8F5;">Investors</h3>
+            <p style="font-size: 14px; line-height: 1.55; color: #9E9E94; margin: 0;">The funds and individuals actually setting the terms of this cycle.</p>
+          </a>
+          <a href="#" style="background: #050505; padding: 40px 36px 44px; display: block;" style-hover="background: #0B0B0A;">
+            <p style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0.14em; color: #0F6E56; margin: 0;">03</p>
+            <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; margin: 60px 0 12px; color: #F8F8F5;">Ideas</h3>
+            <p style="font-size: 14px; line-height: 1.55; color: #9E9E94; margin: 0;">Trends changing how technology and business get built &mdash; before consensus arrives.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section style="max-width: 1240px; margin: 0 auto; padding: 76px 32px 20px;">
+      <div style="display: flex; align-items: baseline; gap: 20px; border-bottom: 1px solid #050505; padding-bottom: 12px;">
+        <h2 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 40px; line-height: 1; margin: 0;">The Ink</h2>
+        <p style="font-size: 13px; color: #6E6E66; margin: 0;">Opinion &amp; analysis from the Venture Ink desk.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0;">
+        <a href="#" onClick="{{ goArticle }}" style="display: block; padding: 40px 40px 44px 0; border-right: 1px solid #E4E4DE;">
+          <p style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8A82; margin: 0 0 22px;">Essay</p>
+          <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 33px; line-height: 1.1; margin: 0; letter-spacing: -0.005em; text-wrap: pretty;">Not every startup needs venture capital.</h3>
+          <p style="font-size: 12px; color: #8A8A82; margin: 26px 0 0;">Editorial &middot; 6 min read</p>
+        </a>
+        <a href="#" onClick="{{ goArticle }}" style="display: block; padding: 40px 40px 44px; border-right: 1px solid #E4E4DE;">
+          <p style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8A82; margin: 0 0 22px;">Analysis</p>
+          <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 33px; line-height: 1.1; margin: 0; letter-spacing: -0.005em; text-wrap: pretty;">AI isn't replacing founders. It's changing what a founder can build.</h3>
+          <p style="font-size: 12px; color: #8A8A82; margin: 26px 0 0;">Editorial &middot; 9 min read</p>
+        </a>
+        <a href="#" onClick="{{ goArticle }}" style="display: block; padding: 40px 0 44px 40px;">
+          <p style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8A82; margin: 0 0 22px;">Opinion</p>
+          <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 33px; line-height: 1.1; margin: 0; letter-spacing: -0.005em; text-wrap: pretty;">India's startup story is entering its second act.</h3>
+          <p style="font-size: 12px; color: #8A8A82; margin: 26px 0 0;">Editorial &middot; 7 min read</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="newsletter" style="max-width: 1240px; margin: 40px auto 0; padding: 0 32px 88px;">
+      <div style="background: #E1F5EE; padding: 52px 56px; display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: center;">
+        <div style="flex: 2 1 320px; min-width: 0;">
+          <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 18px;">
+            <img src="assets/venture-ink-mark.png" alt="" style="height: 16px; width: auto; display: block;" />
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0F6E56;">Newsletter</span>
+          </div>
+          <h2 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 40px; line-height: 1.04; margin: 0; letter-spacing: -0.008em;">The Venture Ink Brief</h2>
+          <p style="font-size: 15px; line-height: 1.55; color: #29473E; margin: 14px 0 0; max-width: 44ch;">The stories, companies and ideas worth knowing &mdash; delivered to your inbox.</p>
+        </div>
+        <form onSubmit="{{ noSubmit }}" style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; border-bottom: 1px solid #0F6E56;">
+            <input type="email" placeholder="Your email" style="flex: 1; border: 0; background: transparent; outline: none; padding: 12px 2px; font-family: Inter, sans-serif; font-size: 15px; color: #050505;" />
+            <button type="submit" style="border: 0; background: #0F6E56; color: #F8F8F5; font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 22px; cursor: pointer;" style-hover="background: #050505;">Subscribe</button>
+          </div>
+          <p style="font-size: 12px; color: #4E6C62; margin: 0;">Twice a week. No sponsored placements.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isArticle }}" hint-placeholder-val="{{ false }}">
+  <main>
+    <article style="max-width: 1240px; margin: 0 auto; padding: 0 32px;">
+      <div style="max-width: 700px; margin: 0 auto; padding: 64px 0 0;">
+        <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0F6E56; margin: 0 0 20px;">Venture Capital</p>
+        <h1 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 54px; line-height: 1.05; letter-spacing: -0.014em; margin: 0; text-wrap: pretty;">The new generation of Indian VCs is betting on a different future</h1>
+        <p style="font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; line-height: 1.4; color: #3A3A34; margin: 22px 0 0; text-wrap: pretty;">Smaller funds, sharper theses and a willingness to be early &mdash; the country's next investment cycle is being written by people who did not run the last one.</p>
+        <div style="display: flex; gap: 18px; align-items: center; margin: 30px 0 0; padding: 18px 0; border-top: 1px solid #E4E4DE; border-bottom: 1px solid #E4E4DE; font-size: 12px; color: #6E6E66; letter-spacing: 0.02em;">
+          <span style="color: #050505; font-weight: 500;">By Venture Ink</span>
+          <span>September 2, 2026</span>
+          <span>7 min read</span>
+        </div>
+      </div>
+
+      <div style="max-width: 1000px; margin: 40px auto 0;">
+        <div style="position: relative; overflow: hidden; aspect-ratio: 16 / 8.4; background: #ECECE6;">
+          <div style="position: absolute; inset: 0; background: #F2F2EE; padding: 34px 40px; display: flex; flex-direction: column; justify-content: center;">
+            <p style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A82; margin: 0 0 22px;">Fig. 1 &mdash; Median close size, new India-focused funds</p>
+            <div style="display: flex; flex-direction: column; gap: 14px; max-width: 640px;"><div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">2019</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 100%; background: #D9D8D0; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.10s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">$142M</span>
+                  </div><div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">2021</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 100%; background: #D9D8D0; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.19s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">$210M</span>
+                  </div><div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">2023</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 68%; background: #8FBFAF; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.28s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">$96M</span>
+                  </div><div style="display: grid; grid-template-columns: 88px minmax(0,1fr) 44px; align-items: center; gap: 10px;">
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A82;">2026</span>
+                    <span style="height: 7px; background: #E4E3DB; display: block;"><span style="display: block; height: 7px; width: 48%; background: #0F6E56; transform-origin: left; animation: vi-grow-x 0.6s cubic-bezier(0.2,0.7,0.2,1) both; animation-delay: 0.37s;"></span></span>
+                    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: #050505; text-align: right;">$68M</span>
+                  </div></div>
+          </div>
+        </div>
+        <p style="font-size: 12px; color: #8A8A82; margin: 12px 0 0;">Fund closes tracked by Venture Ink. Figures are self-reported.</p>
+      </div>
+
+      <div style="max-width: 700px; margin: 0 auto; padding: 52px 0 0; font-size: 19px; line-height: 1.68; color: #17170F;">
+        <p style="margin: 0 0 26px;"><span style="font-family: 'Instrument Serif', Georgia, serif; font-size: 21px;">For most of the last decade,</span> Indian venture capital ran on a simple trade: buy growth early in a market that was getting online for the first time, and let scale sort out the economics later. That trade is over. The funds raising money in 2026 are smaller, more concentrated and far more explicit about where their edge comes from.</p>
+        <p style="margin: 0 0 26px;">Nine of the fourteen new India-focused funds closed in the past eighteen months came in under $75 million. Almost all of them describe themselves as thesis-led rather than stage-led &mdash; a distinction that would have sounded precious three years ago and now reads as risk management.</p>
+
+        <h2 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 32px; line-height: 1.14; letter-spacing: -0.008em; margin: 44px 0 18px;">The end of the index approach</h2>
+        <p style="margin: 0 0 26px;">The old model rewarded coverage. Write enough cheques into enough categories and one outcome pays for the fund. What has changed is not conviction but cost: seed valuations held while exit paths lengthened, which quietly removed the margin that made the index approach work.</p>
+
+        <blockquote style="margin: 40px 0; padding: 0 0 0 28px; border-left: 2px solid #0F6E56;">
+          <p style="font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; line-height: 1.22; margin: 0; letter-spacing: -0.006em;">&ldquo;We are not trying to see every deal anymore. We are trying to be the obvious first call in four categories.&rdquo;</p>
+          <footer style="font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #8A8A82; margin-top: 16px;">Partner at a 2025-vintage seed fund</footer>
+        </blockquote>
+
+        <p style="margin: 0 0 26px;">That concentration shows up in portfolio construction. Where a 2021 seed fund might have held sixty positions, the current cohort is building books of eighteen to twenty-five, with half the capital reserved for follow-on.</p>
+
+        <div style="border-top: 1px solid #050505; border-bottom: 1px solid #E4E4DE; padding: 28px 0; margin: 40px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px;">
+          <div>
+            <p style="font-family: 'Instrument Serif', Georgia, serif; font-size: 40px; line-height: 1; color: #0F6E56; margin: 0;">$68M</p>
+            <p style="font-size: 12px; line-height: 1.45; color: #4A4A44; margin: 10px 0 0;">Median close size, new India seed funds, 2025&ndash;26</p>
+          </div>
+          <div>
+            <p style="font-family: 'Instrument Serif', Georgia, serif; font-size: 40px; line-height: 1; color: #0F6E56; margin: 0;">22</p>
+            <p style="font-size: 12px; line-height: 1.45; color: #4A4A44; margin: 10px 0 0;">Average target portfolio size, down from 54</p>
+          </div>
+          <div>
+            <p style="font-family: 'Instrument Serif', Georgia, serif; font-size: 40px; line-height: 1; color: #0F6E56; margin: 0;">47%</p>
+            <p style="font-size: 12px; line-height: 1.45; color: #4A4A44; margin: 10px 0 0;">Share of capital held in reserve for follow-on</p>
+          </div>
+        </div>
+
+        <h2 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 32px; line-height: 1.14; letter-spacing: -0.008em; margin: 44px 0 18px;">What founders should read into it</h2>
+        <p style="margin: 0 0 26px;">For founders, the practical effect is a narrower window and a harder question. Term sheets are arriving faster for companies inside a fund's declared thesis and much slower for everything else. The diligence has shifted from market size to whether the team has an unfair reason to be the one building this.</p>
+        <p style="margin: 0 0 26px;">It is a less forgiving market and, for the operators who have been through one cycle already, a more legible one. The people writing cheques now are betting on a version of India that compounds rather than one that inflects &mdash; and they are sizing their funds accordingly.</p>
+      </div>
+
+      <div style="max-width: 1000px; margin: 72px auto 0; padding-bottom: 88px;">
+        <h2 style="font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; margin: 0 0 10px;">Related stories</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: 1px solid #050505;">
+          <a href="#" onClick="{{ goArticle }}" style="display: block; padding: 26px 32px 30px 0; border-right: 1px solid #E4E4DE;">
+            <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0F6E56; margin: 0 0 10px;">Startups</p>
+            <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 24px; line-height: 1.16; margin: 0; text-wrap: pretty;">The quiet return of the profitable startup</h3>
+          </a>
+          <a href="#" onClick="{{ goArticle }}" style="display: block; padding: 26px 32px 30px; border-right: 1px solid #E4E4DE;">
+            <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0F6E56; margin: 0 0 10px;">Technology</p>
+            <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 24px; line-height: 1.16; margin: 0; text-wrap: pretty;">India is building compute before it needs it</h3>
+          </a>
+          <a href="#" onClick="{{ goArticle }}" style="display: block; padding: 26px 0 30px 32px;">
+            <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0F6E56; margin: 0 0 10px;">Founders</p>
+            <h3 style="font-family: 'Instrument Serif', Georgia, serif; font-size: 24px; line-height: 1.16; margin: 0; text-wrap: pretty;">Second-time founders are raising less on purpose</h3>
+          </a>
+        </div>
+      </div>
+    </article>
+  </main>
+  </sc-if>
+
+  <footer style="border-top: 1px solid #E4E4DE; background: #F8F8F5;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px 32px 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 48px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="assets/venture-ink-mark.png" alt="Venture Ink" style="height: 40px; width: auto; display: block;" />
+          <span style="font-family: 'Instrument Serif', Georgia, serif; font-size: 34px; line-height: 1;">Venture Ink</span>
+        </div>
+        <p style="font-size: 14px; color: #4A4A44; margin: 16px 0 0; max-width: 34ch;">Stories shaping the next generation of business.</p>
+      </div>
+      <div>
+        <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A82; margin: 0 0 16px;">Sections</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+          <a href="#" onClick="{{ goHome }}">Latest</a>
+          <a href="#">Startups</a>
+          <a href="#">VC</a>
+          <a href="#">Founders</a>
+          <a href="#">Technology</a>
+          <a href="#">About</a>
+        </div>
+      </div>
+      <div>
+        <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A82; margin: 0 0 16px;">Follow</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+          <a href="#">LinkedIn</a>
+          <a href="#">X</a>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 32px 48px;">
+      <div style="border-top: 1px solid #E4E4DE; padding-top: 20px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12px; color: #8A8A82;">
+        <span>&copy; 2026 Venture Ink</span>
+        <div style="display: flex; gap: 22px;">
+          <a href="#" style="color: #8A8A82;">Privacy</a>
+          <a href="#" style="color: #8A8A82;">Terms</a>
+          <a href="#" style="color: #8A8A82;">Editorial Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;latestCount&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:6,&quot;min&quot;:3,&quot;max&quot;:7,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;showLatestThumbs&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;showProgressBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Article&quot;}}">
+class Component extends DCLogic {
+  state = { view: "home", searchOpen: false, progress: "0%" };
+
+  componentDidMount() {
+    this._onScroll = () => {
+      if (this.state.view !== "article") return;
+      const d = document.documentElement;
+      const max = d.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0;
+      this.setState({ progress: p.toFixed(1) + "%" });
+    };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    this._onKey = (e) => { if (e.key === "Escape") this.setState({ searchOpen: false }); };
+    window.addEventListener("keydown", this._onKey);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("keydown", this._onKey);
+  }
+
+  nav(view) {
+    return (e) => {
+      if (e) e.preventDefault();
+      this.setState({ view, searchOpen: false, progress: "0%" });
+      window.scrollTo(0, 0);
+    };
+  }
+
+  renderVals() {
+    
+    const stories = [
+      { category: "VC", title: "India's venture market is entering a new phase", dek: "Investors are becoming more selective as founders rethink how they build and raise.", read: "4 min read", metricLabel: "Deal value, H1", metric: "$4.2B", metricNote: "down 18% YoY" },
+      { category: "Startups", title: "The quiet return of the profitable startup", dek: "A cohort of companies is growing slower on purpose, and their cap tables show why.", read: "5 min read", metricLabel: "Profitable at Series B", metric: "31%", metricNote: "up from 12%" },
+      { category: "AI", title: "Every enterprise now has an AI budget. Almost none have an AI process.", dek: "Procurement moved faster than deployment, and the gap is where the next companies get built.", read: "6 min read", metricLabel: "Enterprises with AI budget", metric: "78%", metricNote: "9% in production" },
+      { category: "Funding", title: "Inside the $40M round that took nine months to close", dek: "Three term sheets, two withdrawn, and a lesson in how growth diligence has changed.", read: "7 min read", metricLabel: "Round size", metric: "$40M", metricNote: "9 months to close" },
+      { category: "Founders", title: "Second-time founders are raising less on purpose", dek: "Smaller rounds, tighter teams and a deliberate refusal to scale before the product is right.", read: "5 min read", metricLabel: "Median seed raise", metric: "$1.8M", metricNote: "second-time founders" },
+      { category: "Technology", title: "India is building compute before it needs it", dek: "Data-centre commitments are running ahead of demand. The bet is that demand always arrives.", read: "8 min read", metricLabel: "Committed capacity", metric: "1.4GW", metricNote: "by 2028" },
+      { category: "Business", title: "The new economics of quick commerce", dek: "Advertising, not delivery, is where the margin finally showed up.", read: "6 min read", metricLabel: "Ad revenue share", metric: "22%", metricNote: "of gross margin" }
+    ];
+    const count = Math.max(3, Math.min(7, this.props.latestCount ?? 6));
+    return {
+      isHome: this.state.view === "home",
+      isArticle: this.state.view === "article",
+      searchOpen: this.state.searchOpen,
+      showProgress: this.state.view === "article" && (this.props.showProgressBar ?? true),
+      progress: this.state.progress,
+      showThumbs: this.props.showLatestThumbs ?? true,
+      latest: stories.slice(0, count),
+      goHome: this.nav("home"),
+      goArticle: this.nav("article"),
+      openSearch: (e) => { if (e) e.preventDefault(); this.setState({ searchOpen: true }); },
+      closeSearch: (e) => { if (e) e.preventDefault(); this.setState({ searchOpen: false }); },
+      noSubmit: (e) => e.preventDefault()
+    };
+  }
+}
+</script>
+</body>
+</html>
